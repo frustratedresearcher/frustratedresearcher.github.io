@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ravi Rajput — I build AI that runs security operations, and break the rest</title>
+<meta name="description" content="Security leader across three fronts: production agentic AI (Xalon, 78% auto-resolution), AI/LLM security (SecAI, MLSec-Analyzer), and offensive research from CAN buses to plant floors. DEF CON, BlackHat Asia, HITB, HITCON, NULLCON speaker.">
+<meta property="og:title" content="Ravi Rajput — Security leader: build AI, break AI, red-team the rest">
+<meta property="og:description" content="Production agentic SOC (916K+ detections), LLM security products, 0-day research reported to VinFast's CEO. Talks at DEF CON 33, BlackHat Asia, HITB, HITCON, NULLCON.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://infosecravi.com/">
+<link rel="canonical" href="https://infosecravi.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230F1216'/%3E%3Ctext x='6' y='23' font-family='monospace' font-size='18' font-weight='bold' fill='%23FFB000'%3E%3E_%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#0F1216;
+  --panel:#141A21;
+  --panel-2:#10161C;
+  --text:#D8D2C4;
+  --dim:#7C8894;
+  --amber:#FFB000;
+  --amber-dim:#9A7A28;
+  --red:#FF5C57;
+  --green:#4CC96B;
+  --line:#232B34;
+  --maxw:1100px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{
+  background:var(--ground);
+  background-image:
+    linear-gradient(rgba(255,176,0,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,176,0,.025) 1px, transparent 1px);
+  background-size:36px 36px;
+  color:var(--text);
+  font-family:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  font-size:15px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--amber);text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline;text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+::selection{background:var(--amber);color:var(--ground)}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:50;background:rgba(15,18,22,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:16px;flex-wrap:wrap}
+.prompt{font-weight:700;color:var(--text);font-size:.95rem}
+.prompt .u{color:var(--amber)}
+.prompt .h{color:var(--dim)}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{color:var(--dim);font-size:.82rem;padding:4px 10px;border:1px solid transparent}
+nav a:hover{color:var(--amber);border-color:var(--line);text-decoration:none;background:var(--panel)}
+
+/* ---------- hero terminal ---------- */
+.hero{padding:64px 0 56px}
+.term{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.term-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--dim);font-size:.78rem}
+.term-bar .dot{width:11px;height:11px;border-radius:50%;background:var(--line)}
+.term-bar .dot:nth-child(1){background:#FF5C57}
+.term-bar .dot:nth-child(2){background:#FFB000}
+.term-bar .dot:nth-child(3){background:#4CC96B}
+.term-bar .title{margin-left:8px}
+.term-body{padding:26px 26px 30px;overflow-x:auto}
+.tline{opacity:0;animation:show .01s forwards}
+.tline.cmd{color:var(--text)}
+.tline .ps{color:var(--amber);font-weight:700}
+.tline.out{color:var(--dim)}
+.tline.gap{height:.9em}
+@keyframes show{to{opacity:1}}
+.tline:nth-of-type(1){animation-delay:.15s}
+.tline:nth-of-type(2){animation-delay:.65s}
+.tline:nth-of-type(3){animation-delay:.85s}
+.tline:nth-of-type(4){animation-delay:1.05s}
+.tline:nth-of-type(5){animation-delay:1.25s}
+.tline:nth-of-type(6){animation-delay:1.45s}
+.tline:nth-of-type(7){animation-delay:1.95s}
+.tline:nth-of-type(8){animation-delay:2.15s}
+.tline:nth-of-type(9){animation-delay:2.35s}
+.tline:nth-of-type(10){animation-delay:2.55s}
+.tline:nth-of-type(11){animation-delay:2.75s}
+.tline:nth-of-type(12){animation-delay:3.1s}
+.pillars{margin-top:26px;display:flex;flex-direction:column;gap:2px}
+.pillars a{display:block;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(1.5rem,4.4vw,2.9rem);line-height:1.15;color:var(--text);padding:6px 0}
+.pillars a:hover{text-decoration:none;color:var(--amber)}
+.pillars .k{color:var(--amber)}
+.pillars .m{display:block;font-family:'JetBrains Mono',monospace;font-weight:400;font-size:.82rem;color:var(--dim);margin-top:2px}
+.pillars .m b{color:var(--text);font-weight:500}
+.cursor::after{content:"█";color:var(--amber);animation:blink 1.1s steps(1) infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.status-strip{display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--line);border-radius:6px;margin-top:34px;overflow:hidden}
+.status-strip .cell{flex:1 1 160px;padding:14px 18px;border-right:1px solid var(--line);background:var(--panel)}
+.status-strip .cell:last-child{border-right:0}
+.status-strip .n{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:1.5rem;color:var(--amber)}
+.status-strip .l{color:var(--dim);font-size:.75rem}
+
+/* ---------- sections ---------- */
+section{padding:64px 0;border-top:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+.sec-head .idx{color:var(--amber-dim);font-size:.85rem}
+h2{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:.02em;color:var(--text)}
+.lede{color:var(--dim);max-width:72ch;margin-bottom:36px;font-size:.92rem}
+.lede b{color:var(--text);font-weight:500}
+/* executive voice: prose runs in a humanist face; terminal chrome stays mono */
+.lede,.entry-body p,.mod li,.commit .msg,.commit .detail,.teach p,.vid figcaption,.log-row .venue,.log-row .talk,.contact-term .big,.pillars .m{font-family:'Archivo',system-ui,sans-serif}
+.entry-body p{font-size:.98rem;line-height:1.6}
+.mod li,.log-row .venue,.log-row .talk{font-size:.92rem}
+
+/* ---------- leadership brief ---------- */
+.brief{border:1px solid var(--amber-dim);border-radius:6px;background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%)}
+.brief-head{padding:14px 22px;border-bottom:1px solid var(--line);color:var(--dim);font-size:.78rem}
+.brief-head b{color:var(--amber);font-weight:700}
+.brief-body{padding:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.brief-item{border-left:2px solid var(--amber);padding-left:16px}
+.brief-item .bn{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:1.6rem;color:var(--text)}
+.brief-item .bl{font-family:'Archivo',system-ui,sans-serif;color:var(--dim);font-size:.9rem;line-height:1.5}
+.brief-item .bl b{color:var(--text);font-weight:600}
+
+/* ---------- work entries ---------- */
+.entry{border:1px solid var(--line);background:var(--panel);border-radius:6px;margin-bottom:18px;overflow:hidden}
+.entry-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.entry-head h3{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:1.08rem;color:var(--text);margin-right:auto}
+.tag{font-size:.7rem;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:3px;border:1px solid}
+.tag.prod{color:var(--green);border-color:var(--green)}
+.tag.oss{color:var(--amber);border-color:var(--amber)}
+.tag.zero{color:var(--red);border-color:var(--red)}
+.tag.rev{color:#6FB3FF;border-color:#6FB3FF}
+.tag.stage{color:#C792EA;border-color:#C792EA}
+.entry-body{padding:18px 20px 20px}
+.entry-body p{color:var(--dim);max-width:80ch;font-size:.92rem}
+.entry-body p b{color:var(--text);font-weight:500}
+.kv{display:flex;gap:28px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.kv div{font-size:.8rem;color:var(--dim)}
+.kv .v{display:block;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:1.05rem;color:var(--amber)}
+.entry-body .links{margin-top:14px;font-size:.85rem}
+.entry-body .links a + a{margin-left:20px}
+.entry-body .links a::before{content:"↳ ";color:var(--amber-dim)}
+
+/* ---------- speaking log ---------- */
+.log{border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.log-row{display:grid;grid-template-columns:70px 210px 1fr;gap:16px;padding:13px 20px;border-top:1px solid var(--line);background:var(--panel)}
+.log-row:first-child{border-top:0}
+.log-row:nth-child(odd){background:var(--panel-2)}
+.log-row .yr{color:var(--amber);font-weight:700;font-size:.85rem}
+.log-row .venue{color:var(--text);font-weight:500;font-size:.88rem}
+.log-row .talk{color:var(--dim);font-size:.88rem}
+.log-row .talk a{font-size:.82rem;white-space:nowrap}
+
+/* ---------- videos ---------- */
+.vidgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px}
+.vid{background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.vid .vbar{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--panel-2);color:var(--dim);font-size:.72rem}
+.vid .vbar .dot{width:9px;height:9px;border-radius:50%}
+.vid .vbar .dot.r{background:#FF5C57}.vid .vbar .dot.y{background:#FFB000}.vid .vbar .dot.g{background:#4CC96B}
+.vid .frame{position:relative;padding-top:56.25%}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid .thumb{position:absolute;inset:0;display:block}
+.vid .thumb img{width:100%;height:100%;object-fit:cover;filter:saturate(.8)}
+.vid .thumb .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(15,18,22,.9);color:var(--amber);font-weight:700;font-size:.82rem;padding:9px 16px;border:1px solid var(--amber);border-radius:4px}
+.vid .thumb:hover .play{background:var(--amber);color:var(--ground);text-decoration:none}
+.vid figcaption{padding:12px 16px 14px;color:var(--dim);font-size:.82rem}
+.vid figcaption b{color:var(--text);font-weight:500}
+
+/* ---------- expertise modules ---------- */
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.mod{border:1px solid var(--line);border-radius:6px;background:var(--panel);padding:0}
+.mod h3{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:.95rem;color:var(--amber);padding:13px 18px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.mod h3::before{content:"[ok] ";color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:400}
+.mod ul{list-style:none;padding:10px 18px 14px}
+.mod li{color:var(--dim);padding:6px 0;font-size:.85rem;border-top:1px dashed var(--line)}
+.mod li:first-child{border-top:0}
+.mod li b{color:var(--text);font-weight:500}
+
+/* ---------- git log timeline ---------- */
+.gitlog{border-left:1px solid var(--line);margin-left:8px;padding-left:0}
+.commit{position:relative;padding:10px 0 10px 30px}
+.commit::before{content:"";position:absolute;left:-5px;top:20px;width:9px;height:9px;border-radius:50%;background:var(--ground);border:2px solid var(--amber)}
+.commit .meta{color:var(--amber-dim);font-size:.78rem}
+.commit .msg{color:var(--text);font-weight:500;font-size:.92rem}
+.commit .detail{color:var(--dim);font-size:.85rem}
+
+/* ---------- teaching ---------- */
+.teach p{color:var(--dim);max-width:78ch;margin-bottom:14px;font-size:.92rem}
+.teach p b{color:var(--text);font-weight:500}
+
+/* ---------- contact ---------- */
+.contact-term{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:30px 28px}
+.contact-term .big{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(1.3rem,3vw,2rem);color:var(--text);max-width:30ch;line-height:1.3;margin:10px 0 22px}
+.ways{display:flex;gap:14px;flex-wrap:wrap}
+.ways a{border:1px solid var(--amber);padding:9px 18px;border-radius:4px;font-size:.88rem;font-weight:500}
+.ways a:hover{background:var(--amber);color:var(--ground);text-decoration:none}
+footer{padding:26px 0 44px;color:var(--dim);font-size:.75rem}
+
+@media (max-width:720px){
+  .log-row{grid-template-columns:56px 1fr;gap:6px 14px}
+  .log-row .talk{grid-column:2}
+  section{padding:48px 0}
+  .hero{padding:40px 0}
+  .term-body{padding:18px 16px 22px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hd">
+    <div class="prompt"><span class="u">ravi</span><span class="h">@rajput</span>:~$ <span class="cursor"></span></div>
+    <nav aria-label="Site">
+      <a href="#work">./work</a>
+      <a href="#leadership">./leadership</a>
+      <a href="#speaking">./speaking</a>
+      <a href="#videos">./videos</a>
+      <a href="#expertise">./expertise</a>
+      <a href="#path">./history</a>
+      <a href="#contact">./contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div class="term">
+    <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">ravi@rajput: ~/portfolio — 80×24</span></div>
+    <div class="term-body">
+      <p class="tline cmd"><span class="ps">$</span> whoami --verbose</p>
+      <p class="tline out">Ravi Rajput — security automation leader &amp; offensive researcher. Hyderabad, India.</p>
+      <p class="tline out">11+ years breaking systems, 3 shipping AI that defends them.</p>
+      <p class="tline out">tagline: I build AI that runs security operations, break AI before</p>
+      <p class="tline out">attackers do, and red-team everything in between — web, cloud,</p>
+      <p class="tline out">hardware, and industrial.</p>
+      <p class="tline gap" aria-hidden="true"></p>
+      <p class="tline cmd"><span class="ps">$</span> cat pillars.txt</p>
+
+      <div class="tline pillars">
+        <a href="#work"><span class="k">build:</span> AI that runs security operations
+          <span class="m">Xalon agentic SOC — <b>916,000+ detections</b>, <b>78%</b> resolved with no human in the loop</span>
+        </a>
+        <a href="#work"><span class="k">break:</span> AI, before attackers do
+          <span class="m">SecAI LLM scanner — <b>$1.2M</b> client revenue · MLSec-Analyzer for backdoored models</span>
+        </a>
+        <a href="#speaking"><span class="k">red-team:</span> everything in between
+          <span class="m">0-day Chromium exploit in a shipping vehicle — <b>acknowledged by VinFast's CEO</b></span>
+        </a>
+      </div>
+
+      <p class="tline cmd" style="margin-top:22px"><span class="ps">$</span> <span class="cursor"></span></p>
+    </div>
+  </div>
+
+  <div class="status-strip" role="list" aria-label="Key numbers">
+    <div class="cell" role="listitem"><div class="n">916K+</div><div class="l">detections handled in production</div></div>
+    <div class="cell" role="listitem"><div class="n">78%</div><div class="l">auto-resolved, no human touch</div></div>
+    <div class="cell" role="listitem"><div class="n">$1.2M</div><div class="l">revenue anchored by SecAI</div></div>
+    <div class="cell" role="listitem"><div class="n">11</div><div class="l">conference stages, 3 continents</div></div>
+    <div class="cell" role="listitem"><div class="n">6</div><div class="l">open-source security projects</div></div>
+  </div>
+</div>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">[01]</span><h2>Work that shipped</h2></div>
+    <p class="lede">Seven things built or broken — each one changed a real number for a real organisation.</p>
+
+    <div class="entry">
+      <div class="entry-head"><h3>Xalon — production agentic SOC</h3><span class="tag prod">PROD</span><span class="tag stage">2025—NOW</span></div>
+      <div class="entry-body">
+        <p>22 specialised agents on Microsoft AutoGen 0.4 with Anthropic Claude and Google Gemini in adversarial reasoning, on Azure Kubernetes. Every agent runs inside least-privilege IAM boundaries under a threat model I red-team myself with PyRIT and Garak. Five-lane severity-tiered model routing keeps daily LLM spend at $25–40 against a workload that would otherwise cost $375–500.</p>
+        <div class="kv">
+          <div><span class="v">10–12K</span>alerts ingested / day</div>
+          <div><span class="v">78%</span>auto-resolution</div>
+          <div><span class="v">$110K/yr</span>operating savings</div>
+          <div><span class="v">30×</span>per-alert cost differential</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head"><h3>SecAI — SaaS LLM vulnerability scanner</h3><span class="tag prod">PROD</span><span class="tag stage">2023—25</span></div>
+      <div class="entry-body">
+        <p>Proprietary scanner implementing the <b>OWASP Top 10 for LLM Applications 2024</b> — prompt injection, insecure output handling, data-poisoning exposure — built and delivered at SourceHOV for Oracle, AIDO, and LLA client environments.</p>
+        <div class="kv">
+          <div><span class="v">$1.2M</span>annual client revenue anchored</div>
+          <div><span class="v">50%</span>critical AI-app risk cut in 6 months</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head"><h3>LLM-PT — autonomous LLM pentesting suite</h3><span class="tag oss">OSS</span></div>
+      <div class="entry-body">
+        <p>A Python CLI that orchestrates <b>promptfoo, Garak, and DeepTeam</b> against LLM-backed web apps, APIs, and websockets — testing the <b>OWASP Top 10 for LLM Applications (2025)</b>. Point it at a Burp Suite request export and an LLM works out which field carries the user prompt, so payloads land in the right place with no manual wiring. Findings normalise into one schema, an optional LLM judge re-scores hits, and results emit as SARIF for CI/CD.</p>
+        <p class="links"><a href="https://github.com/frustratedresearcher/LLM_PT">github.com/frustratedresearcher/LLM_PT</a></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head"><h3>MLSec-Analyzer — model-file security scanner</h3><span class="tag oss">OSS</span></div>
+      <div class="entry-body">
+        <p>Static analysis for the ML supply chain: pickle RCE, Keras Lambda RCE (CVE-2024-3660), GGUF overflow, zip-slip, embedded secrets, and backdoored-weight anomalies across seven model formats. SARIF output for CI/CD.</p>
+        <p class="links"><a href="https://github.com/frustratedresearcher/MLSec-Analyzer">github.com/frustratedresearcher/MLSec-Analyzer</a></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head"><h3>LSTM Automotive Security — CAN-bus intrusion detection</h3><span class="tag oss">OSS</span><span class="tag stage">DEF CON 33</span></div>
+      <div class="entry-body">
+        <p>LSTM Autoencoder and Variational Autoencoder detecting replay attacks, fuzzing, timing deviations, and entropy anomalies on raw CAN telemetry — no proprietary DBC decoding needed. Presented on the <b>DEF CON 33 Creator Stage</b>.</p>
+        <p class="links"><a href="https://github.com/frustratedresearcher/LSTM-Automotive-Security-PoC">source</a><a href="https://defcon.org/html/defcon-33/dc-33-creator-talks.html#content_60261">DEF CON listing</a></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head"><h3>AutoHackOS — vehicle pentesting operating system</h3><span class="tag oss">OSS</span><span class="tag stage">BLACKHAT ASIA</span></div>
+      <div class="entry-body">
+        <p>A bootable distro that puts CAN, BLE, telecom/SDR, firmware, and network tooling in one place — ending the multi-VM juggling act for vehicle security teams. Demonstrated at <b>BlackHat Asia 2023 Arsenal</b>.</p>
+        <p class="links"><a href="https://github.com/frustratedresearcher/AutoHackOS">source</a><a href="https://blackhat.com/asia-23/arsenal/schedule/#introducing-the-operating-system-for-automotive-security-testing-a-hands-on-demonstration-30886">Arsenal listing</a></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head"><h3>The VinFast research — 0-day in a shipping vehicle</h3><span class="tag zero">0-DAY</span><span class="tag stage">2022</span></div>
+      <div class="entry-body">
+        <p>At AmynaSec Research Lab: a <b>0-day Chromium browser exploit</b>, an Android companion-app vulnerability, and a cloud-side bug in a production vehicle platform — disclosed to <b>VinFast with direct CEO acknowledgement</b>. Part of pentesting across <b>20+ vehicle communication protocols</b>, later extended to Modbus and ICS/SCADA assessments on live plant floors.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="leadership">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">[02]</span><h2>Leadership</h2></div>
+    <p class="lede">The hacker builds and breaks. The manager makes it repeatable, billable, and survivable — through an acquisition, across 20+ enterprise clients.</p>
+    <div class="brief">
+      <div class="brief-head"><b>ravi@rajput:~$</b> cat leadership-brief.txt</div>
+      <div class="brief-body">
+        <div class="brief-item"><div class="bn">11–20</div><div class="bl"><b>Cross-functional team</b> of engineers, SOC analysts, and shift-roster managers — led through a post-acquisition transition without losing a client.</div></div>
+        <div class="brief-item"><div class="bn">$1.2M</div><div class="bl"><b>Revenue book owned.</b> SecAI anchored directly-attributable annual client revenue across Oracle, AIDO, and LLA — partnerships retained to this day.</div></div>
+        <div class="brief-item"><div class="bn">40%</div><div class="bl"><b>Faster incident response</b> across 20+ enterprise clients after redesigning the SOC and Red Team operating model at SourceHOV.</div></div>
+        <div class="brief-item"><div class="bn">30×</div><div class="bl"><b>Cost engineering as strategy.</b> Severity-tiered model routing turned AI from a cost risk into a $110K/yr saving — with per-agent, per-incident cost observability.</div></div>
+        <div class="brief-item"><div class="bn">1 practice</div><div class="bl"><b>Built from zero.</b> Founded and led the Automotive Security practice at BlueBinaries — ISO/SAE 21434 programmes for OEM and Tier-1 clients.</div></div>
+        <div class="brief-item"><div class="bn">3 yrs</div><div class="bl"><b>Mentorship at scale.</b> NULL Ahmedabad chapter lead — free monthly security training; today mentoring engineers and analysts inside the team.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="speaking">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">[03]</span><h2>Speaking</h2></div>
+    <p class="lede">Eleven stages across three continents. Every listing links to the conference's own record.</p>
+    <div class="log">
+      <div class="log-row"><span class="yr">2025</span><span class="venue">DEF CON 33, Las Vegas</span><span class="talk">“Context Aware Anomaly Detection in Automotive CAN Without Decoding” — Creator Stage, plus a hands-on Creator Workshop. <a href="https://defcon.org/html/defcon-33/dc-33-creator-talks.html#content_60261">talk</a> · <a href="https://defcon.outel.org/defcon33/dc33-consolidated_page_split_Sat.html#AACreator%20Talks_6669ee5235fb7977d2a47bb4c3196aaf">schedule</a> · <a href="https://defcon.outel.org/defcon33/dc33-consolidated_page_split_Fri.html#AACreator%20Workshops_d44cc40dd3611ffda606eb893a8a9df7">workshop</a></span></div>
+      <div class="log-row"><span class="yr">2025</span><span class="venue">c0c0n, Kochi</span><span class="talk">Telecom Village. <a href="https://india.c0c0n.org/2025/telecom-village">village page</a></span></div>
+      <div class="log-row"><span class="yr">2025</span><span class="venue">CSAxCON</span><span class="talk">Speaker — automotive security. <a href="https://www.csaxcon.com/speakers/ravi-rajput">profile</a></span></div>
+      <div class="log-row"><span class="yr">2024</span><span class="venue">HITBSecConf, Bangkok</span><span class="talk">“Exploiting the In-Vehicle Browser: A Novel Attack Vector in Autonomous Vehicles”. <a href="https://conference.hitb.org/hitbsecconf2024bkk/speaker/ravi-rajput/">profile</a></span></div>
+      <div class="log-row"><span class="yr">2024</span><span class="venue">BSides Mumbai</span><span class="talk">“V2X Exploitation: Steering Through Auto Cyber Seas”.</span></div>
+      <div class="log-row"><span class="yr">2023</span><span class="venue">BlackHat Asia, Singapore</span><span class="talk">Arsenal — “Introducing the Operating System for Automotive Security Testing”. <a href="https://blackhat.com/asia-23/arsenal/schedule/#introducing-the-operating-system-for-automotive-security-testing-a-hands-on-demonstration-30886">listing</a></span></div>
+      <div class="log-row"><span class="yr">2023</span><span class="venue">HITCON, Taipei</span><span class="talk">Speaker. <a href="https://hitcon.org/2023/CMT/en/agenda/1d89d588-af12-459a-bda9-2a5b5b589100/">agenda</a></span></div>
+      <div class="log-row"><span class="yr">2023</span><span class="venue">NULLCON, Goa</span><span class="talk">“ARM-ing for Android: Unraveling the Mysteries of Native Library Reverse Engineering”. <a href="https://nullcon.net/talk/arm-ing-for-android-unraveling-the-mysteries-of-native-library-reverse-engineering/">talk page</a></span></div>
+      <div class="log-row"><span class="yr">2023</span><span class="venue">BSides Indore</span><span class="talk">Speaker.</span></div>
+      <div class="log-row"><span class="yr">2020</span><span class="venue">BSides Maharashtra</span><span class="talk">Speaker. <a href="https://www.youtube.com/watch?v=QzhPK8eD8oc">recording</a></span></div>
+      <div class="log-row"><span class="yr">2019</span><span class="venue">Bounty Bash, Nepal</span><span class="talk">Speaker.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="videos">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">[04]</span><h2>Watch the talks</h2></div>
+    <p class="lede">Recordings from conference stages and the AutoSec Pro webinar series.</p>
+    <div class="vidgrid">
+      <figure class="vid"><div class="vbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>defcon-33_can-anomaly-detection.mp4</div><div class="frame"><iframe loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/VchCd-o25z0" title="DEF CON 33 — Context Aware Anomaly Detection in Automotive CAN Without Decoding" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><figcaption><b>DEF CON 33</b> — Context Aware Anomaly Detection in Automotive CAN Without Decoding (official DEF CON channel)</figcaption></figure>
+      <figure class="vid"><div class="vbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>hitb-2024_in-vehicle-browser.mp4</div><div class="frame"><iframe loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/sUDpXjswing" title="HITB2024BKK — Exploiting the In-Vehicle Browser: A Novel Attack Vector in Autonomous Vehicles" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><figcaption><b>HITB 2024 Bangkok</b> — Exploiting the In-Vehicle Browser: A Novel Attack Vector in Autonomous Vehicles</figcaption></figure>
+      <figure class="vid"><div class="vbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>bsides-mumbai_v2x-exploitation.mp4</div><div class="frame"><iframe loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/ih67j5THfQs" title="BSides Mumbai 2024 — V2X Exploitation: Steering Through Auto Cyber Seas" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><figcaption><b>BSides Mumbai 2024</b> — V2X Exploitation: Steering Through Auto Cyber Seas</figcaption></figure>
+      <figure class="vid"><div class="vbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>blackhat-asia-23_autohackos.mp4</div><div class="frame"><iframe loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/_1Vps8UV_Gk" title="AutoHackOS release at BlackHat Arsenal 2023" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><figcaption><b>BlackHat Asia 2023 Arsenal</b> — AutoHackOS release</figcaption></figure>
+      <figure class="vid"><div class="vbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>autosec-pro_course-webinar.mp4</div><div class="frame"><iframe loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/cVhes2rEDCY" title="AutoSec Pro course webinar — vehicle cybersecurity with the creator" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><figcaption><b>AutoSec Pro course webinar</b> — vehicle cybersecurity with the creator</figcaption></figure>
+      <figure class="vid"><div class="vbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>bsides-maharashtra_talk.mp4</div><div class="frame"><a class="thumb" href="https://www.youtube.com/watch?v=QzhPK8eD8oc"><img src="https://i.ytimg.com/vi/QzhPK8eD8oc/hqdefault.jpg" alt="BSides Maharashtra talk recording thumbnail" loading="lazy"><span class="play">watch on YouTube ↗</span></a></div><figcaption><b>BSides Maharashtra</b> — talk recording (embedding disabled by the channel, opens on YouTube)</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="expertise">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">[05]</span><h2>Expertise</h2></div>
+    <p class="lede">Three fronts, one discipline — every module below is backed by an entry in <a href="#work">./work</a>
+      <a href="#leadership">./leadership</a>.</p>
+    <div class="mods">
+      <div class="mod">
+        <h3>building_ai_for_security</h3>
+        <ul>
+          <li><b>Agentic systems</b> — AutoGen, MCP, multi-agent orchestration</li>
+          <li><b>Multi-LLM adversarial reasoning</b> — Claude, Gemini, Azure OpenAI</li>
+          <li><b>AI cost engineering</b> — severity-tiered routing, 30× per-alert differential</li>
+          <li><b>SOC modernisation</b> — CrowdStrike Falcon, Sentinel, Splunk</li>
+          <li><b>Cloud security architecture</b> — Azure AKS deep, AWS and GCP design-level</li>
+        </ul>
+      </div>
+      <div class="mod">
+        <h3>securing_ai</h3>
+        <ul>
+          <li><b>AI threat modeling</b> — MITRE ATLAS, OWASP Top 10 for LLM Apps</li>
+          <li><b>AI red teaming</b> — prompt injection, jailbreaks, tool abuse, RAG poisoning; PyRIT, Garak, and my own LLM-PT suite</li>
+          <li><b>ML supply-chain security</b> — model-file scanning, backdoored weights</li>
+          <li><b>AI governance</b> — NIST AI RMF, ISO 42001, data provenance</li>
+          <li><b>IAM for autonomous agents</b> — least privilege, excessive-agency control</li>
+        </ul>
+      </div>
+      <div class="mod">
+        <h3>offensive_security</h3>
+        <ul>
+          <li><b>Automotive</b> — CAN, ECU, infotainment, Android Automotive; ISO/SAE 21434, TARA</li>
+          <li><b>OT and ICS</b> — Modbus, SCADA, plant-floor assessment; IEC 62443</li>
+          <li><b>Hardware and firmware</b> — fuzzing, SDR/RF, BLE, reverse engineering</li>
+          <li><b>Red and purple team</b> — web, cloud, Windows exploitation</li>
+          <li><b>0-day research</b> — browser, mobile, and cloud-side findings in production systems</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="path">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">[06]</span><h2>git log --career</h2></div>
+    <div class="gitlog">
+      <div class="commit"><div class="meta">2025 — now · xbp-global</div><div class="msg">Manager, Cyber Security — XBP Global (formerly SourceHOV)</div><div class="detail">Xalon, AI red teaming, a cross-functional team of 11–20.</div></div>
+      <div class="commit"><div class="meta">2025 · independent</div><div class="msg">Subject-Matter Expert (contract) — hardware security &amp; applied AI</div><div class="detail">R&amp;D lead for an AI-enabled automated hardware pentesting device; delivered the working MVP.</div></div>
+      <div class="commit"><div class="meta">2023 — 2025 · sourcehov</div><div class="msg">Information Security Manager — SourceHOV</div><div class="detail">SecAI; SOC and Red Team redesign — 40% faster incident response across 20+ clients.</div></div>
+      <div class="commit"><div class="meta">2022 — 2023 · bluebinaries</div><div class="msg">Lead Engineer, Automotive Security — BlueBinaries</div><div class="detail">Built the practice; ISO/SAE 21434 programmes for OEM and Tier-1 clients.</div></div>
+      <div class="commit"><div class="meta">2022 · amynasec</div><div class="msg">Lead Security Researcher — AmynaSec Research Lab</div><div class="detail">The VinFast research; OT extension into Modbus and ICS/SCADA.</div></div>
+      <div class="commit"><div class="meta">2019 — 2021 · 8bit-digital</div><div class="msg">Senior Security Researcher — 8 Bit Digital</div><div class="detail">Protocol and firmware fuzzing; AppSec automation — 40% faster cycles.</div></div>
+      <div class="commit"><div class="meta">2015 — 2019 · innovador</div><div class="msg">Penetration Tester — Innovador Infotech</div><div class="detail">Web, Android, wireless/RF; 30+ critical findings; Windows user-mode exploits.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="teaching" class="teach">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">[07]</span><h2>Teaching and community</h2></div>
+    <p><b>AutoSec Pro — Vehicle Cybersecurity Mastery (W52)</b>, a full course on Pentest Magazine covering vehicle pentesting end to end. <a href="https://pentestmag.com/product/autosec-pro-vehicle-cybersecurity-mastery-w52/">enroll on Pentest Magazine</a></p>
+    <p>Co-organiser of the <b>DEF CON US Telecom Village</b> since 2023, and of the <b>Telecom Village at c0c0n 2025</b>. Chapter lead of NULL Ahmedabad, 2017–2020 — three years of free monthly security training for the community.</p>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">[08]</span><h2>Contact</h2></div>
+    <div class="contact-term">
+      <div style="color:var(--dim);font-size:.85rem"><span style="color:var(--amber);font-weight:700">$</span> ./hire --role security-leadership --mode remote-or-global</div>
+      <div class="big">If your security operation needs someone who builds and breaks — talk to me.</div>
+      <div class="ways">
+        <a href="mailto:rajputravi645@gmail.com">rajputravi645@gmail.com</a>
+        <a href="https://infosecravi.com">infosecravi.com</a>
+        <a href="https://www.linkedin.com/in/frustratedresearcher">LinkedIn</a>
+        <a href="https://github.com/frustratedresearcher">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">ravi rajput — infosecravi.com — hyderabad, india · open to remote and global roles · no trackers on this page beyond YouTube's standard video embeds</div>
+</footer>
+
+</body>
+</html>
