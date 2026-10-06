@@ -6,3 +6,6 @@ blog-src/dist/
 # blog-src/src/content/blog/ (where the posts live).
 /blog/
 .DS_Store
+live.html
+live.css
+r.html
