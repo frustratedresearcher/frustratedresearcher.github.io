@@ -1,7 +1,7 @@
 export const SITE = {
   title: 'infosecravi — notes',
   description:
-    'Field notes on agentic AI security, LLM red teaming, ML supply-chain security and offensive research — from CAN buses to plant floors.',
+    'Field notes on agentic AI security, LLM red teaming, ML supply-chain security and offensive research — written by a practitioner who builds these systems and attacks them.',
   url: 'https://infosecravi.com',
   base: '/blog',
 };
