@@ -1,7 +1,7 @@
 ---
 title: "Excessive agency is an authorisation bug wearing an AI costume"
 description: "The severity of an LLM compromise is set by what the agent is permitted to do, not by how it was tricked. Scoping tools to least privilege converts most agent vulnerabilities from critical to cosmetic — and it is ordinary authorisation work, not AI work."
-pubDate: 2026-10-10
+pubDate: 2026-10-06
 tags: ["Agentic AI", "AI Security", "Excessive Agency", "OWASP LLM Top 10", "IAM"]
 tldr: "Every agent incident has two halves: the model was manipulated, and the agent was allowed to act on it. You cannot reliably fix the first half, but the second is ordinary authorisation engineering. Scope each tool to the narrowest capability that works, separate read from write, and gate irreversible actions — then a successful manipulation produces wrong text instead of a wrong outcome."
 faq:

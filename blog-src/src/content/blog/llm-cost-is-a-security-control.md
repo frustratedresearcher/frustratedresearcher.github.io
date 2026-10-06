@@ -1,7 +1,7 @@
 ---
 title: "LLM cost is a security control, not a finance problem"
 description: "Running every security alert through your most capable model is a denial-of-wallet vulnerability and a detection gap at the same time. Severity-tiered routing cut our per-alert cost 30× — and the reason it works is a security argument, not a budget one."
-pubDate: 2026-10-13
+pubDate: 2026-10-06
 tags: ["Agentic AI", "SOC Automation", "AI Cost Engineering", "Denial of Wallet", "AI Security"]
 tldr: "If every alert costs the same to analyse, economics forces you to choose between coverage and budget — and you will quietly drop coverage. Routing by severity, so cheap models triage volume and expensive models handle escalations, breaks that trade-off. In our agentic SOC it produced a 30× per-alert cost spread, kept daily spend at $25-40 against a $375-500 flat-rate equivalent, and removed an attacker-controlled path to exhausting the budget."
 faq:

@@ -1,7 +1,7 @@
 ---
 title: "Your model file is a code execution primitive"
 description: "Downloading a model from a public hub is running untrusted code. Pickle deserialisation, Keras Lambda layers (CVE-2024-3660) and GGUF parsing all give an attacker execution before inference ever starts — and most ML pipelines scan none of it."
-pubDate: 2026-10-08
+pubDate: 2026-10-06
 tags: ["ML Supply Chain", "Model Security", "Pickle RCE", "AI Security", "CVE-2024-3660"]
 tldr: "A model file is not data — several formats execute code on load. Pickle-based checkpoints run arbitrary Python during deserialisation, Keras .h5 and .keras files can carry Lambda layers that execute on load (CVE-2024-3660), and binary formats like GGUF have parser-level memory bugs. If your pipeline pulls weights from a public hub and calls load() without scanning first, you have a remote code execution path that no amount of prompt-level defence touches."
 faq:
