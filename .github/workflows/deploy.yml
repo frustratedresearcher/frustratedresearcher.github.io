@@ -1,0 +1,80 @@
+name: Deploy site
+
+# Builds the whole site (static root + Astro blog) and publishes it to GitHub
+# Pages directly. Replaces the legacy branch build, so no build output is
+# committed to the repo any more.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; queue instead of cancelling so a push is not
+# silently dropped mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: blog-src/package-lock.json
+
+      - name: Install blog dependencies
+        working-directory: blog-src
+        run: npm ci
+
+      - name: Build blog
+        working-directory: blog-src
+        run: npm run build
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp CNAME _site/
+          cp llms.txt _site/
+          cp robots.txt _site/
+          cp -r blog _site/blog
+          echo "--- artifact contents ---"
+          find _site -type f | sort
+
+      - name: Verify artifact before publishing
+        run: |
+          set -e
+          test -s _site/index.html            || { echo "::error::index.html missing or empty"; exit 1; }
+          test -s _site/blog/index.html       || { echo "::error::blog index missing"; exit 1; }
+          test -s _site/CNAME                 || { echo "::error::CNAME missing - custom domain would break"; exit 1; }
+          grep -q infosecravi.com _site/CNAME || { echo "::error::CNAME has wrong content"; exit 1; }
+          test -s _site/llms.txt              || { echo "::error::llms.txt missing"; exit 1; }
+          test -s _site/robots.txt            || { echo "::error::robots.txt missing"; exit 1; }
+          # every stylesheet the blog references must actually exist in the artifact
+          for css in $(grep -ohE '/blog/assets/[^"]+\.css' _site/blog/index.html | sort -u); do
+            test -s "_site${css}" || { echo "::error::referenced stylesheet missing: ${css}"; exit 1; }
+          done
+          echo "Artifact verified."
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
