@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { SITE } from '../consts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const fmt = (d) => d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+const listLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: posts.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: new URL(`${SITE.base}/${p.id}/`, SITE.url).href,
+    name: p.data.title,
+  })),
+}];
+---
+<Base title={SITE.title} description={SITE.description} jsonLd={listLd}>
+  <div class="page-head">
+    <div class="kicker">$ ls -lt ~/notes</div>
+    <h1>Notes</h1>
+    <p class="sub">{SITE.description}</p>
+  </div>
+
+  <ul class="postlist">
+    {posts.map((p) => (
+      <li>
+        <a class="row" href={`${SITE.base}/${p.id}/`}>
+          <div class="meta">
+            <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
+          </div>
+          <h2>{p.data.title}</h2>
+          <p class="dek">{p.data.description}</p>
+          {p.data.tags.length > 0 && (
+            <div class="tags">{p.data.tags.map((t) => <span class="tag">{t}</span>)}</div>
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
+</Base>

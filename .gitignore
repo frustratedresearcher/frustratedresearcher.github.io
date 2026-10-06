@@ -1,0 +1,4 @@
+blog-src/node_modules/
+blog-src/.astro/
+blog-src/dist/
+.DS_Store

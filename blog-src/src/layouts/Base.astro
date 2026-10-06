@@ -1,0 +1,119 @@
+---
+import { SITE, AUTHOR } from '../consts';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  type?: 'website' | 'article';
+  pubDate?: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  jsonLd?: object[];
+}
+
+const {
+  title,
+  description,
+  canonical = new URL(Astro.url.pathname, SITE.url).href,
+  type = 'website',
+  pubDate,
+  updatedDate,
+  tags = [],
+  jsonLd = [],
+} = Astro.props;
+
+const base = SITE.base;
+
+// Person entity ships on every page: it is the authority signal answer engines
+// use to decide whether a claim is attributable to a real, corroborated expert.
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE.url}/#person`,
+  name: AUTHOR.name,
+  url: AUTHOR.url,
+  jobTitle: AUTHOR.jobTitle,
+  sameAs: AUTHOR.sameAs,
+  knowsAbout: AUTHOR.knowsAbout,
+};
+
+const siteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': `${SITE.url}${base}/#blog`,
+  name: SITE.title,
+  description: SITE.description,
+  url: `${SITE.url}${base}/`,
+  author: { '@id': `${SITE.url}/#person` },
+  publisher: { '@id': `${SITE.url}/#person` },
+};
+
+const graph = [personLd, siteLd, ...jsonLd];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="author" content={AUTHOR.name} />
+
+<!-- answer engines: explicit crawl permission, these are opt-in for many -->
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content="infosecravi.com" />
+{pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}
+{updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
+{tags.map((t) => <meta property="article:tag" content={t} />)}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<link rel="alternate" type="application/rss+xml" title={SITE.title} href={`${base}/rss.xml`} />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230F1216'/%3E%3Ctext x='6' y='23' font-family='monospace' font-size='18' font-weight='bold' fill='%23FFB000'%3E%3E_%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />
+</head>
+<body>
+
+<header>
+  <div class="wrap hd">
+    <a class="prompt" href="/"><span class="u">ravi</span><span class="h">@rajput</span>:~$ <span class="cursor"></span></a>
+    <nav aria-label="Site">
+      <a href="/">./home</a>
+      <a href={`${base}/`}>./blog</a>
+      <a href="/#work">./work</a>
+      <a href="/#speaking">./speaking</a>
+      <a href="/#contact">./contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <slot />
+</main>
+
+<footer>
+  <div class="wrap">
+    ravi rajput — <a href="/">infosecravi.com</a> — hyderabad, india ·
+    <a href={`${base}/rss.xml`}>rss</a> ·
+    <a href="/llms.txt">llms.txt</a>
+  </div>
+</footer>
+
+</body>
+</html>

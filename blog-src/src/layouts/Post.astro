@@ -1,0 +1,113 @@
+---
+import Base from './Base.astro';
+import { SITE, AUTHOR } from '../consts';
+
+const { post } = Astro.props;
+const d = post.data;
+const url = new URL(`${SITE.base}/${post.id}/`, SITE.url).href;
+
+const fmt = (x: Date) =>
+  x.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// BlogPosting: the citable unit. `about` + `keywords` give answer engines the
+// topic anchors; `speakable` marks the passage safe to read aloud verbatim.
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${url}#article`,
+  headline: d.title,
+  description: d.description,
+  abstract: d.tldr ?? d.description,
+  datePublished: d.pubDate.toISOString(),
+  dateModified: (d.updatedDate ?? d.pubDate).toISOString(),
+  author: { '@id': `${SITE.url}/#person` },
+  publisher: { '@id': `${SITE.url}/#person` },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  isPartOf: { '@id': `${SITE.url}${SITE.base}/#blog` },
+  keywords: d.tags.join(', '),
+  about: d.tags.map((t: string) => ({ '@type': 'Thing', name: t })),
+  inLanguage: 'en',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['.tldr', 'article h1'],
+  },
+};
+
+const faqLd =
+  d.faq.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        '@id': `${url}#faq`,
+        mainEntity: d.faq.map((f: { q: string; a: string }) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      }
+    : null;
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE.url}${SITE.base}/` },
+    { '@type': 'ListItem', position: 3, name: d.title, item: url },
+  ],
+};
+
+const graph = [articleLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])];
+const { Content } = Astro.props;
+---
+
+<Base
+  title={`${d.title} — infosecravi`}
+  description={d.description}
+  canonical={url}
+  type="article"
+  pubDate={d.pubDate}
+  updatedDate={d.updatedDate}
+  tags={d.tags}
+  jsonLd={graph}
+>
+  <article>
+    <h1>{d.title}</h1>
+    <div class="postmeta">
+      <time datetime={d.pubDate.toISOString()}>{fmt(d.pubDate)}</time>
+      {d.updatedDate && <> · updated <time datetime={d.updatedDate.toISOString()}>{fmt(d.updatedDate)}</time></>}
+      · by {AUTHOR.name}
+    </div>
+
+    {d.tldr && (
+      <div class="tldr">
+        <span class="label">TL;DR</span>
+        <p>{d.tldr}</p>
+      </div>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {d.tags.length > 0 && (
+      <div class="tags">
+        {d.tags.map((t: string) => <span class="tag">{t}</span>)}
+      </div>
+    )}
+
+    {d.faq.length > 0 && (
+      <section class="faq">
+        <h2>Frequently asked</h2>
+        {d.faq.map((f: { q: string; a: string }) => (
+          <details>
+            <summary>{f.q}</summary>
+            <div class="ans">{f.a}</div>
+          </details>
+        ))}
+      </section>
+    )}
+
+    <a class="backlink" href={`${SITE.base}/`}>&larr; all posts</a>
+  </article>
+</Base>

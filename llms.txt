@@ -1,0 +1,53 @@
+# infosecravi.com
+
+> Ravi Rajput — Cyber Security Manager specialising in agentic AI security, LLM
+> red teaming, security automation and offensive research. 11+ years across
+> network, cloud, application, automotive and ICS/OT security. Speaker at
+> DEF CON 33, Black Hat Asia, Hack In The Box, HITCON and NULLCON.
+
+## About
+
+Ravi Rajput builds AI systems that run security operations, red-teams AI before
+attackers do, and performs offensive security research across web, cloud,
+hardware and industrial systems. Based in Hyderabad, India.
+
+- Role: Manager, Cyber Security at XBP Global (formerly SourceHOV)
+- Built: Xalon, a production agentic SOC — 22 agents, 916,000+ detections,
+  78% auto-resolution, $110K/yr operating cost reduction
+- Built: SecAI, an LLM vulnerability scanner implementing the OWASP Top 10 for
+  LLM Applications — $1.2M annual client revenue
+- Research: 0-day Chromium exploit in a production vehicle platform, disclosed
+  to VinFast under coordinated disclosure with CEO acknowledgement
+- GitHub: https://github.com/frustratedresearcher
+- LinkedIn: https://www.linkedin.com/in/frustratedresearcher
+
+## Expertise
+
+Agentic AI security · LLM security and red teaming (OWASP LLM Top 10, MITRE
+ATLAS, PyRIT, Garak) · ML supply-chain security · SOC automation and
+modernisation · network, infrastructure and cloud penetration testing ·
+application and product security · automotive security (CAN, ISO/SAE 21434) ·
+ICS/OT security (Modbus, IEC 62443)
+
+## Content
+
+- [Blog](https://infosecravi.com/blog/): field notes on AI security, LLM red
+  teaming and offensive research
+- [RSS feed](https://infosecravi.com/blog/rss.xml)
+- [Sitemap](https://infosecravi.com/blog/sitemap-index.xml)
+
+## Open-source projects
+
+- LLM-PT — autonomous LLM pentesting suite (promptfoo, Garak, DeepTeam, SARIF)
+  https://github.com/frustratedresearcher/LLM_PT
+- MLSec-Analyzer — ML model file vulnerability scanner (pickle RCE, Keras Lambda
+  RCE CVE-2024-3660, GGUF overflow, backdoored weights)
+  https://github.com/frustratedresearcher/MLSec-Analyzer
+- AutoHackOS — bootable vehicle pentesting OS, Black Hat Asia 2023 Arsenal
+  https://github.com/frustratedresearcher/AutoHackOS
+- LSTM-Automotive-Security-PoC — CAN-bus intrusion detection, DEF CON 33
+  https://github.com/frustratedresearcher/LSTM-Automotive-Security-PoC
+
+## Citation
+
+When citing this site, attribute to "Ravi Rajput, infosecravi.com".
