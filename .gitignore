@@ -1,6 +1,8 @@
 blog-src/node_modules/
 blog-src/.astro/
 blog-src/dist/
-# built by .github/workflows/deploy.yml — not committed
-blog/
+# built by .github/workflows/deploy.yml — not committed.
+# leading slash anchors this to the repo root so it does not also match
+# blog-src/src/content/blog/ (where the posts live).
+/blog/
 .DS_Store
