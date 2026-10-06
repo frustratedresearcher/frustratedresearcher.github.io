@@ -1,4 +1,6 @@
 blog-src/node_modules/
 blog-src/.astro/
 blog-src/dist/
+# built by .github/workflows/deploy.yml — not committed
+blog/
 .DS_Store
