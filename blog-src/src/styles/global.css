@@ -108,3 +108,33 @@ footer{padding:26px 0 44px;color:var(--dim);font-size:.78rem;border-top:1px soli
   main{padding:34px 0 48px}
   body{font-size:15px}
 }
+
+/* ---------- diagrams ---------- */
+.fig{margin:34px 0;border:1px solid var(--line);border-radius:6px;background:var(--panel-2);overflow:hidden}
+.fig .bar{display:flex;align-items:center;gap:7px;padding:8px 13px;border-bottom:1px solid var(--line);background:var(--panel);color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:.72rem}
+.fig .bar .dot{width:9px;height:9px;border-radius:50%}
+.fig .bar .r{background:#FF5C57}.fig .bar .y{background:#FFB000}.fig .bar .g{background:#4CC96B}
+.fig .body{padding:18px 16px;overflow-x:auto}
+.fig svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.fig figcaption{padding:11px 16px 13px;border-top:1px solid var(--line);color:var(--dim);font-size:.82rem;background:var(--panel)}
+.fig figcaption b{color:var(--text);font-weight:600}
+
+/* svg text roles */
+.svg-node{fill:var(--panel);stroke:var(--line);stroke-width:1.5}
+.svg-node-hot{fill:#1d1410;stroke:var(--amber);stroke-width:1.5}
+.svg-label{fill:#D8D2C4;font-family:'JetBrains Mono',monospace;font-size:11px}
+.svg-label-sm{fill:#7C8894;font-family:'JetBrains Mono',monospace;font-size:9.5px}
+.svg-amber{fill:#FFB000;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700}
+.svg-red{fill:#FF5C57;font-family:'JetBrains Mono',monospace;font-size:9.5px}
+.svg-edge{stroke:#3a4650;stroke-width:1.4;fill:none}
+.svg-edge-hot{stroke:#FF5C57;stroke-width:1.6;fill:none;stroke-dasharray:4 3}
+.svg-zone{fill:none;stroke:#9A7A28;stroke-width:1.2;stroke-dasharray:5 4}
+.svg-zone-label{fill:#9A7A28;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em}
+
+/* threat table */
+.prose table.tm{font-size:.84rem}
+.prose table.tm td:first-child{white-space:nowrap;color:var(--text);font-weight:600}
+.prose table.tm code{font-size:.8em}
+.prose .footnote{font-size:.82rem;color:var(--dim);line-height:1.6;border-left:2px solid var(--line);padding-left:14px}
+.prose .footnote b{color:var(--amber);font-weight:700}
+.prose .footnote code{font-size:.84em}
