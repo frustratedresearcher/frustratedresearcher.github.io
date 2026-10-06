@@ -1,0 +1,50 @@
+name: Build blog
+
+# Only fires on blog source changes. The job commits to blog/ (build output),
+# which this filter deliberately excludes — so it cannot retrigger itself.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'blog-src/**'
+      - '.github/workflows/build-blog.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-blog
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: blog-src/package-lock.json
+
+      - name: Install dependencies
+        working-directory: blog-src
+        run: npm ci
+
+      - name: Build site
+        working-directory: blog-src
+        run: npm run build
+
+      - name: Commit built output
+        run: |
+          git config user.name "Ravi Rajput"
+          git config user.email "rajputravi645@gmail.com"
+          git add blog/
+          if git diff --cached --quiet; then
+            echo "No change in built output — nothing to commit."
+            exit 0
+          fi
+          git commit -m "build: blog output [skip ci]"
+          git push
