@@ -5,6 +5,7 @@ export const SCENARIOS=[
  {id:'insurance',title:'LumenCover · Insurance claims',summary:'Four agents extract claim documents, apply eligibility rules, update the case and request a payout.',focus:'Untrusted attachments, inherited browser sessions, missing approvals and background work.',counts:'4 agents · 4 tools · 3 stores',tag:'Intentional security gaps'},
  {id:'cloud',title:'CedarOps · Cloud remediation',summary:'Five agents investigate an alert, plan a fix, change cloud resources, deploy code and verify recovery.',focus:'Transitive privilege chains, shell isolation, CI/CD authority and delegation loops.',counts:'5 agents · 5 tools · 3 stores',tag:'Intentional security gaps'},
  {id:'commerce',title:'JuniperCart · Ecommerce refunds',summary:'Four agents read customer messages, check order policy, issue bounded refunds and notify customers.',focus:'Service-owned delegation, long-lived credentials, shared memory and outbound exports.',counts:'4 agents · 4 tools · 3 stores',tag:'Mixed safeguards'},
+ {id:'health',title:'MediPath · Clinical intake & triage',summary:'Two agents triage a patient intake, then execute care-plan and prescription actions through shared clinical systems.',focus:'Shared identity, autonomous admin writes, an implicit-authority handoff, multi-tenant PHI without tenant ACLs, and an untrusted clinical RAG.',counts:'2 agents · 2 tools · 2 stores',tag:'Intentional security gaps'},
  {id:'bank-hardened',title:'AsterBank · Hardened reference',summary:'The same banking workflow with declared scoped grants, independent tool checks and isolated state.',focus:'Compare the proposed safe implementation against the original banking example.',counts:'5 agents · 5 tools · 3 stores',tag:'Declared controls to verify'}
 ];
 
@@ -80,6 +81,27 @@ export function scenarioModel(id='bank'){
   Object.assign(m.controls,{cancel:'unknown',egress:'no',provider:'unknown'});
   return attach(m,id,'JuniperCart (fictional)','A customer reports a delayed order. The policy checker validates entitlement, a bounded refund service processes the approved request, and another agent sends a status update.',[
    ['Sample ticket','SUP-DEMO-01094'],['Synthetic order','ORDER-DEMO-77821 · customer CUST-DEMO-102'],['Refund request','₹1,249 · REFUND-DEMO-993'],['Store tenants','Juniper-Home-DEMO / Juniper-Style-DEMO'],['Illustrative service contract','Only an approved order and original payment can receive a refund; capped at ₹2,500 per example request.'],['Notification recipient','customer102@example.invalid'],['Potential export','CRM batch DEMO-014 · synthetic support history'],['Failure to explore','Delegation is bounded, but cross-store memory and external export safeguards are incomplete.']
+  ]);
+ }
+ if(id==='health'){
+  const m=base('MediPath — Clinical intake and triage');
+  m.agents=[
+   agent(1,'Intake Triage Agent','Patient intake and symptom triage','svc-intake-shared','write','approve','external'),
+   agent(2,'Care Orchestrator','Care-plan and order execution','svc-care-admin','admin','autonomous','private')
+  ];
+  m.agents[0].identity='shared';m.agents[1].identity='inherited';
+  m.tools=[
+   tool(1,'EHR Patient Records API','api','write','ehr.medipath.internal',[1,2],{authz:'no',credential:'shared',egress:'no',approval:'no',sandbox:'unknown',audience:'unknown'}),
+   tool(2,'e-Prescribing Order Gateway','http','admin','api.rxgateway.example',[2],{authz:'no',credential:'longlived',egress:'yes',approval:'no',sandbox:'unknown',audience:'unknown'})
+  ];
+  m.delegations=[handoff(1,1,2,{authorization:'none',contract:'unknown',provenance:'no',approval:'no',queue:'no',replay:'no'})];
+  m.data=[
+   source(1,'Patient PHI Records (EHR)','memory',[1,2],{trust:'trusted',access:'write',tenantAcl:'no',ingestion:'no',memoryAuth:'unknown'}),
+   source(2,'Clinical Guidelines RAG','rag',[1],{sensitivity:'internal',tenantAcl:'no',provenance:'no',memoryAuth:'unknown'})
+  ];
+  Object.assign(m.controls,{policy:'no',kill:'no',revocation:'no',cancel:'no',approvalBinding:'no',budget:'no',supply:'no',egress:'no',provider:'no'});
+  return attach(m,id,'MediPath (fictional)','A patient submits symptoms through an intake form. The triage agent reads the untrusted input and hands the case to an autonomous orchestrator, which writes to the shared EHR and sends prescriptions through an external gateway.',[
+   ['Sample encounter','ENC-DEMO-2026-0731'],['Synthetic patient','PT-DEMO-4471 · Patient 4471'],['Intake channel','Patient-submitted symptom form (untrusted)'],['Requested action','RX-DEMO-5590 · e-prescribe and care-plan update'],['Clinic tenants','NorthClinic-DEMO vs SouthClinic-DEMO · shared PHI store'],['Knowledge source','Clinical Guidelines RAG · ingests external medical content'],['Workload','Illustrative 900 intakes / day'],['Failure to explore','An external patient message can reach an autonomous admin that writes orders and PHI across tenants.']
   ]);
  }
  throw Error('Unknown fictional scenario.');
