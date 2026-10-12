@@ -47,6 +47,7 @@ jobs:
           cp llms.txt _site/
           cp robots.txt _site/
           cp -r blog _site/blog
+          cp -r trustmap _site/trustmap
           echo "--- artifact contents ---"
           find _site -type f | sort
 
@@ -55,6 +56,9 @@ jobs:
           set -e
           test -s _site/index.html            || { echo "::error::index.html missing or empty"; exit 1; }
           test -s _site/blog/index.html       || { echo "::error::blog index missing"; exit 1; }
+          test -s _site/trustmap/index.html   || { echo "::error::trustmap index missing"; exit 1; }
+          test -s _site/trustmap/app.mjs      || { echo "::error::trustmap app.mjs missing"; exit 1; }
+          test -s _site/trustmap/checklist.json || { echo "::error::trustmap checklist.json missing"; exit 1; }
           test -s _site/CNAME                 || { echo "::error::CNAME missing - custom domain would break"; exit 1; }
           grep -q infosecravi.com _site/CNAME || { echo "::error::CNAME has wrong content"; exit 1; }
           test -s _site/llms.txt              || { echo "::error::llms.txt missing"; exit 1; }

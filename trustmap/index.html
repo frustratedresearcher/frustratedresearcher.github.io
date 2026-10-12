@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101c2c">
+  <meta name="description" content="Build an agentic AI architecture one answer at a time. Explore trust boundaries, delegation risks, and secure implementation patterns.">
+  <title>Trustmap — Agentic Threat Modeling Lab</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="rail">
+      <a class="brand" href="./" aria-label="Trustmap home"><span class="brand-mark">T</span><span>trustmap<span class="brand-sub">AGENTIC SECURITY LAB</span></span></a>
+      <div class="workspace-label">YOUR WORKSPACE</div>
+      <nav aria-label="Workspace navigation">
+        <button class="nav-item active" data-nav="build"><span>◇</span> Architecture <small id="nav-node-count">0</small></button>
+        <button class="nav-item" data-nav="analysis"><span>◎</span> Threat analysis <small id="nav-threat-count">0</small></button>
+        <button class="nav-item" data-nav="library"><span>▤</span> Control library <small>168</small></button>
+      </nav>
+      <div class="rail-card"><span class="tiny-label">THE PRINCIPLE</span><p>A handoff should transfer a task.<br><strong>Never implicit authority.</strong></p><span class="rail-line"></span><p class="rail-small">Map the identity, scope, and policy behind every action.</p></div>
+      <div class="rail-bottom"><span class="status-dot"></span> Browser-local workspace <p>By Ravi Rajput · Checklist v1.0</p><button class="text-button" data-action="about">About this lab ↗</button></div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="project-title">Untitled architecture</strong></div>
+        <div class="top-actions"><span id="save-state" class="save-status">Local draft</span><button class="icon-button" id="undo" data-action="undo" aria-label="Undo last answer" title="Undo (Ctrl/Cmd+Z)">↶</button><button class="icon-button" id="redo" data-action="redo" aria-label="Redo last answer" title="Redo (Ctrl/Cmd+Shift+Z)">↷</button><button class="button secondary compact" data-action="export-menu">Export ↗</button></div>
+      </header>
+      <div id="workspace">
+        <section class="page-heading"><div><span class="eyebrow"><span class="status-dot"></span> INTERACTIVE ARCHITECTURE INTERVIEW</span><h1>Your architecture.<br><span>Its hidden trust boundaries.</span></h1><p>Answer a few questions. Watch the system take shape.<br>Then explore what each agent can really cause.</p></div><button class="example-button" data-action="examples"><span class="example-icon">◈</span><span>Try an example<small>Five realistic fictional setups</small></span><span>↗</span></button></section>
+        <section class="scenario-banner" id="scenario-banner" hidden></section>
+        <section class="model-stats" aria-label="Architecture summary"><div><span>Agents</span><strong id="agent-count">0</strong></div><div><span>Tools & stores</span><strong id="asset-count">0</strong></div><div><span>Connections</span><strong id="edge-count">0</strong></div><div><span>Open questions</span><strong id="unknown-count">0</strong></div><div class="stats-context"><span class="status-dot"></span><span id="stats-label">Your first answer starts the map</span></div></section>
+        <div class="work-grid">
+          <section class="canvas-panel">
+            <div class="canvas-toolbar"><div class="segmented" aria-label="Graph mode"><button class="active" data-mode="current">Current architecture</button><button data-mode="blueprint">Secure blueprint</button></div><div class="graph-actions"><button class="icon-button" data-action="zoom-out" aria-label="Zoom out">−</button><span id="zoom-label">100%</span><button class="icon-button" data-action="zoom-in" aria-label="Zoom in">+</button><button class="icon-button" data-action="fit" aria-label="Fit graph">⤢</button></div></div>
+            <div id="blueprint-note" class="blueprint-note" hidden>PROPOSED DESIGN · Recommended controls, not evidence of implementation.</div>
+            <div class="graph-area" id="graph-area"><div id="graph"></div></div>
+            <div class="canvas-footer"><div class="legend"><span><i class="legend-agent"></i> Agent</span><span><i class="legend-tool"></i> Tool</span><span><i class="legend-data"></i> Data</span><span><i class="legend-risk"></i> Declared weakness</span></div><span>Click a node or connection to inspect</span></div>
+            <div id="selection-summary" class="selection-summary"></div>
+          </section>
+          <aside class="interview-panel" id="interview-panel"></aside>
+        </div>
+        <section class="bottom-note"><div class="note-icon">↳</div><div><strong>Model the chain, not just the account.</strong><p>A read-only agent can still cause a write through a privileged delegate. Trustmap follows these handoffs and highlights where explicit authorization is missing.</p></div><button class="text-button" data-action="load-chain">See the example →</button></section>
+      </div>
+      <section id="library-view" hidden></section>
+    </main>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="dialog"><div id="dialog-content"></div></dialog>
+  <input id="import-file" type="file" accept="application/json,.json" hidden>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>
