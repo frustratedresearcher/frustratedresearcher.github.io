@@ -9,12 +9,22 @@ export async function GET(context) {
     title: SITE.title,
     description: SITE.description,
     site: context.site,
-    items: posts.map((p) => ({
-      title: p.data.title,
-      description: p.data.tldr ?? p.data.description,
-      pubDate: p.data.pubDate,
-      categories: p.data.tags,
-      link: `${SITE.base}/${p.id}/`,
-    })),
+    items: [
+      {
+        title: 'Trustmap — agentic AI threat-modeling lab',
+        description:
+          'A free, browser-based lab for threat-modeling agentic AI systems: map agents, tools, data and the handoffs between them, surface excessive agency and implicit-authority handoffs, and get a secure blueprint. Runs entirely in the browser.',
+        pubDate: new Date('2026-10-13'),
+        categories: ['agentic ai', 'threat modeling', 'ai security', 'tools'],
+        link: 'https://infosecravi.com/trustmap/',
+      },
+      ...posts.map((p) => ({
+        title: p.data.title,
+        description: p.data.tldr ?? p.data.description,
+        pubDate: p.data.pubDate,
+        categories: p.data.tags,
+        link: `${SITE.base}/${p.id}/`,
+      })),
+    ],
   });
 }

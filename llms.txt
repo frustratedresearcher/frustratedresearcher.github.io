@@ -82,12 +82,26 @@ expected outcome.
 ARC PI Taxonomy by Jason Haddix, Arcanum Information Security (CC BY 4.0).
 Use only against systems you are authorized to test.
 
+## Trustmap — agentic AI threat-modeling lab
+
+Trustmap is a free, browser-based lab for threat-modeling agentic AI systems.
+Answer a short architecture interview and it maps the agents, tools, data stores
+and the handoffs between them, then surfaces the dangerous ones — shared
+identity, excessive agency, and handoffs that transfer implicit authority. It
+proposes a secure blueprint, is backed by a 168-control readiness library, and
+ships six worked example domains (banking, insurance, cloud, ecommerce,
+healthcare, and a hardened reference). Everything runs in the browser; nothing
+is sent to an LLM.
+
+- Open the lab: https://infosecravi.com/trustmap/
+
 ## Content
 
 - [Blog](https://infosecravi.com/blog/): field notes on AI security, agentic AI
   red teaming, LLM penetration testing and offensive research
 - [AI Red Team Checklist](https://infosecravi.com/blog/agentic-ai-red-team-checklist/)
   and [direct download](https://infosecravi.com/blog/Agentic-AI-Red-Team-Checklist.xlsx)
+- [Trustmap — agentic AI threat-modeling lab](https://infosecravi.com/trustmap/) — interactive, browser-local threat modeling for agentic systems
 - [RSS feed](https://infosecravi.com/blog/rss.xml)
 - [Sitemap](https://infosecravi.com/blog/sitemap-index.xml)
 
