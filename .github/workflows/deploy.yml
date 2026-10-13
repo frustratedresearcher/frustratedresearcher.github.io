@@ -46,6 +46,8 @@ jobs:
           cp CNAME _site/
           cp llms.txt _site/
           cp robots.txt _site/
+          cp Ravi-Rajput-CV.pdf _site/
+          cp Ravi-Rajput-CV.docx _site/
           cp -r blog _site/blog
           cp -r trustmap _site/trustmap
           echo "--- artifact contents ---"
@@ -63,6 +65,8 @@ jobs:
           grep -q infosecravi.com _site/CNAME || { echo "::error::CNAME has wrong content"; exit 1; }
           test -s _site/llms.txt              || { echo "::error::llms.txt missing"; exit 1; }
           test -s _site/robots.txt            || { echo "::error::robots.txt missing"; exit 1; }
+          test -s _site/Ravi-Rajput-CV.pdf    || { echo "::error::CV PDF missing"; exit 1; }
+          test -s _site/Ravi-Rajput-CV.docx   || { echo "::error::CV DOCX missing"; exit 1; }
           # every stylesheet the blog references must actually exist in the artifact
           for css in $(grep -ohE '/blog/assets/[^"]+\.css' _site/blog/index.html | sort -u); do
             test -s "_site${css}" || { echo "::error::referenced stylesheet missing: ${css}"; exit 1; }
