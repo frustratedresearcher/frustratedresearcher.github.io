@@ -1,7 +1,7 @@
 ---
 title: "OWASP SAMM in the age of agentic AI: an old maturity model meets a new principal"
 description: "SAMM measures how mature your software assurance is across fifteen practices. Agentic AI does not need a new maturity model — it needs you to re-answer SAMM's existing questions for a principal that is non-deterministic, persuadable, and holds its own credentials. This walks all five SAMM business functions and shows what each practice looks like when the software writes its own next action."
-pubDate: 2026-10-17
+pubDate: 2026-10-15
 tags: ["Agentic AI", "OWASP SAMM", "Maturity Model", "AppSec", "Governance", "AI Security", "Secure SDLC"]
 tldr: "OWASP SAMM's five business functions — Governance, Design, Implementation, Verification, Operations — still map cleanly onto agentic systems. You do not throw SAMM out; you re-score it against a new kind of component. The agent is software that chooses its own actions at runtime, authenticates as itself, and can be argued into decisions, so every SAMM practice gains an agentic question: who owns the agent's privileges, is excessive agency in the threat model, does testing cover tool-call authorisation and prompt injection, and does incident response know how to revoke one agent's identity without killing the fleet."
 faq:

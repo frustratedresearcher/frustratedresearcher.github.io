@@ -1,7 +1,7 @@
 ---
 title: "Open Policy Agent for agentic systems: authorisation that lives outside the model"
 description: "An agent's tool calls need a decision point the model cannot talk its way past. Open Policy Agent gives you one: a policy engine outside the agent that answers 'is this agent allowed to make this call with these parameters?' before the call runs. This is how least privilege, inter-agent re-authorisation and human gates stop being prose and become enforced code."
-pubDate: 2026-10-16
+pubDate: 2026-10-14
 tags: ["Agentic AI", "Open Policy Agent", "OPA", "Rego", "Authorization", "AI Security", "Zero Trust"]
 tldr: "Agent authorisation decisions should not live inside the agent, because the agent is the thing being manipulated. Externalise them to a policy decision point. Open Policy Agent is a mature, CNCF-graduated engine built for exactly this: the agent runtime sends a JSON description of the intended tool call to OPA, OPA evaluates Rego policy against it, and returns allow or deny before the call executes. Least privilege, read/write separation, inter-agent re-authorisation, egress control and human-approval gating all become policy data you can version, test and diff — instead of trust you hope the model honours."
 faq:
