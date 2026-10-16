@@ -1,7 +1,7 @@
 ---
 title: "RBAC, ABAC, ReBAC: three doormen for your AI agents"
 description: "An agent is a principal that acts on someone else's behalf and borrows other agents' trust. Deciding what it may do needs the right authorisation model — and the classic three answer three different questions. RBAC asks what badge you hold, ABAC asks what the whole situation looks like, ReBAC asks who vouches for you. This walks all three for agentic systems, with examples, and shows why secure agentic architecture layers them instead of picking one."
-pubDate: 2026-10-16
+pubDate: 2026-10-15
 tags: ["Agentic AI", "RBAC", "ABAC", "ReBAC", "Authorization", "AI Security", "Secure Architecture", "Zanzibar"]
 tldr: "RBAC grants permissions by role, ABAC by the attributes of a request's subject, resource, action and context, and ReBAC by the relationships between entities in a graph. For agents, RBAC gives a clean coarse capability floor but cannot express 'on behalf of' without exploding into thousands of roles. ABAC captures runtime context an agent's security depends on — is this input untrusted, is there an approval, how sensitive is this data. ReBAC captures delegation and multi-agent trust natively: the agent's authority is an 'acts-for' edge, and its blast radius is the transitive closure of the graph. Secure agentic architecture layers all three — RBAC for the floor, ABAC for context, ReBAC for delegation — enforced at one external decision point."
 faq:

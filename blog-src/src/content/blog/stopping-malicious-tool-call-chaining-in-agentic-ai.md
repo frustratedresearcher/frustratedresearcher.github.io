@@ -1,7 +1,7 @@
 ---
 title: "Stopping malicious tool-call chaining: detect, remediate, alert"
 description: "In an agentic system the crime is rarely a single tool call — it is the sentence those calls spell out together. Read a secret, encode it, send an email: three allowed calls, one exfiltration. This is how to design against chained abuse across all three stages — detecting a malicious chain as it forms, remediating by breaking it mid-sequence, and alerting with telemetry an on-call can act on — and which frameworks and tools do each job."
-pubDate: 2026-10-17
+pubDate: 2026-10-16
 tags: ["Agentic AI", "Tool Chaining", "AI Security", "Detection Engineering", "Prompt Injection", "MITRE ATLAS", "Secure Architecture"]
 tldr: "A malicious tool-call chain is a sequence of individually authorised calls that together cause harm — the canonical pattern being access to private data, exposure to untrusted content, and an outbound path, all in one agent. You cannot stop it by vetting calls one at a time, because each one looks fine. Design across three stages. Detect by tracking data provenance (taint) through the call sequence and scoring the call graph, not each node — tools: Invariant-style trace analysers, OpenTelemetry GenAI traces, OPA policies over call history. Remediate by breaking the chain at its weakest link: deny the step where tainted data meets an outbound action, gate it behind single-use human approval bound to exact parameters, and quarantine the agent's identity — tools: an external policy decision point (OPA/Cedar), per-agent credentials, egress allowlists. Alert with structured decision logs mapped to MITRE ATLAS, correlated as a chain in your SIEM, so the on-call sees the sequence, not seven disconnected events."
 faq:
