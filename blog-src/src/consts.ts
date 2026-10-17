@@ -1,3 +1,7 @@
+// series display name -> URL slug (e.g. "Secure MLOps" -> "secure-mlops")
+export const seriesSlug = (name: string) =>
+  name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 export const SITE = {
   title: 'infosecravi — notes',
   description:

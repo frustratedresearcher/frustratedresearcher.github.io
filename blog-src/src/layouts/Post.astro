@@ -1,10 +1,27 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from './Base.astro';
-import { SITE, AUTHOR } from '../consts';
+import { SITE, AUTHOR, seriesSlug } from '../consts';
 
 const { post } = Astro.props;
 const d = post.data;
 const url = new URL(`${SITE.base}/${post.id}/`, SITE.url).href;
+
+// Series context: find siblings, locate this post, derive prev/next.
+let series = null;
+if (d.series) {
+  const sibs = (await getCollection('blog', ({ data }) => !data.draft && data.series === d.series))
+    .sort((a, b) => (a.data.seriesPart ?? 0) - (b.data.seriesPart ?? 0));
+  const i = sibs.findIndex((p) => p.id === post.id);
+  series = {
+    name: d.series,
+    slug: seriesSlug(d.series),
+    total: sibs.length,
+    part: d.seriesPart ?? i + 1,
+    prev: i > 0 ? sibs[i - 1] : null,
+    next: i < sibs.length - 1 ? sibs[i + 1] : null,
+  };
+}
 
 const fmt = (x: Date) =>
   x.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -72,6 +89,13 @@ const { Content } = Astro.props;
   jsonLd={graph}
 >
   <article>
+    {series && (
+      <a class="series-banner" href={`${SITE.base}/series/${series.slug}/`}>
+        <span class="s-kick">SERIES</span>
+        <span class="s-name">{series.name}</span>
+        <span class="s-part">Part {series.part} of {series.total}</span>
+      </a>
+    )}
     <h1>{d.title}</h1>
     <div class="postmeta">
       <time datetime={d.pubDate.toISOString()}>{fmt(d.pubDate)}</time>
@@ -106,6 +130,17 @@ const { Content } = Astro.props;
           </details>
         ))}
       </section>
+    )}
+
+    {series && (
+      <nav class="series-nav">
+        {series.prev ? (
+          <a href={`${SITE.base}/${series.prev.id}/`}>&larr; Part {series.prev.data.seriesPart}: {series.prev.data.title}</a>
+        ) : <span></span>}
+        {series.next && (
+          <a class="next" href={`${SITE.base}/${series.next.id}/`}>Part {series.next.data.seriesPart}: {series.next.data.title} &rarr;</a>
+        )}
+      </nav>
     )}
 
     <a class="backlink" href={`${SITE.base}/`}>&larr; all posts</a>

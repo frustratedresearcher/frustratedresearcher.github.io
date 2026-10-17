@@ -12,6 +12,10 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     // answer-first summary surfaced to answer engines as the extractable claim
     tldr: z.string().optional(),
+    // optional multi-part series grouping; posts with the same `series` are
+    // collected onto /blog/series/<slug>/ and ordered by `seriesPart`
+    series: z.string().optional(),
+    seriesPart: z.number().optional(),
     // question/answer pairs rendered as FAQPage JSON-LD
     faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
     draft: z.boolean().default(false),

@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { SITE, seriesSlug } from '../../consts';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft && !!data.series);
+  const names = [...new Set(posts.map((p) => p.data.series))];
+  return names.map((name) => {
+    const parts = posts
+      .filter((p) => p.data.series === name)
+      .sort((a, b) => (a.data.seriesPart ?? 0) - (b.data.seriesPart ?? 0));
+    return { params: { series: seriesSlug(name) }, props: { name, parts } };
+  });
+}
+
+const { name, parts } = Astro.props;
+const fmt = (d) => d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+const desc = `A complete, end-to-end series on ${name} — ${parts.length} parts.`;
+
+const listLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name,
+  numberOfItems: parts.length,
+  itemListElement: parts.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: new URL(`${SITE.base}/${p.id}/`, SITE.url).href,
+    name: p.data.title,
+  })),
+}];
+---
+<Base title={`${name} — a series — infosecravi`} description={desc} jsonLd={listLd}>
+  <div class="page-head">
+    <div class="kicker">$ cat ~/series/{Astro.params.series}/README</div>
+    <h1>{name}</h1>
+    <p class="sub">{desc} Read top to bottom, or jump to the part you need.</p>
+  </div>
+
+  <ol class="serieslist">
+    {parts.map((p) => (
+      <li>
+        <a class="row" href={`${SITE.base}/${p.id}/`}>
+          <span class="part">Part {p.data.seriesPart}</span>
+          <div class="body">
+            <h2>{p.data.title}</h2>
+            <p class="dek">{p.data.description}</p>
+            <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  <a class="backlink" href={`${SITE.base}/`}>&larr; all posts</a>
+</Base>

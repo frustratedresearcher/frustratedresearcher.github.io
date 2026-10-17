@@ -1,10 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { SITE } from '../consts';
+import { SITE, seriesSlug } from '../consts';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Curated multi-part series, surfaced as a card so a 10-part series does not
+// bury the chronological feed. Most-recently-updated series first.
+const series = Object.values(
+  posts.reduce((acc, p) => {
+    const name = p.data.series;
+    if (!name) return acc;
+    (acc[name] ??= { name, slug: seriesSlug(name), count: 0, latest: p.data.pubDate }).count++;
+    return acc;
+  }, {})
+).sort((a, b) => b.latest.valueOf() - a.latest.valueOf());
 
 const fmt = (d) => d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
@@ -26,12 +37,25 @@ const listLd = [{
     <p class="sub">{SITE.description}</p>
   </div>
 
+  {series.length > 0 && (
+    <div class="series-cards">
+      <div class="sc-head">Series</div>
+      {series.map((s) => (
+        <a class="sc" href={`${SITE.base}/series/${s.slug}/`}>
+          <span class="sc-name">{s.name}</span>
+          <span class="sc-meta">{s.count}-part series &rarr;</span>
+        </a>
+      ))}
+    </div>
+  )}
+
   <ul class="postlist">
     {posts.map((p) => (
       <li>
         <a class="row" href={`${SITE.base}/${p.id}/`}>
           <div class="meta">
             <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
+            {p.data.series && <span class="series-chip">{p.data.series} · Part {p.data.seriesPart}</span>}
           </div>
           <h2>{p.data.title}</h2>
           <p class="dek">{p.data.description}</p>
